@@ -1,0 +1,143 @@
+# include <stdio.h>
+#include<stdlib.h>
+# include <conio.h>
+# include <string.h>
+
+#define BUFFER_SIZE 1000
+
+struct friend
+{
+        long long int no ;
+        char name[50];
+};
+
+int main()
+{
+    struct friend f;
+    FILE *fp;
+    long long int x;
+    char c;
+    char word[50];
+    int line, col,length,found=0;
+    int ch;
+    
+    while(1)
+    {
+        printf("\n1. TO ADD THE RECORD IN THE FILE.\n");
+        printf("2. TO SEARCH THE RECORD BY NAME.\n");
+        printf("3. TO SERACH THE RECORD BY TELEPHONE NUMBER.\n");
+        printf("4. TO EXIT.\n");
+        printf("ENTER YOUR CHOICE:");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                    fp=fopen("d:\\telephone.txt","a+");
+                    if (fp == NULL)
+                    {
+                        printf("Unable to open file.\n");
+                        printf("Please check you have read/write previleges.\n");
+
+                        exit(1);
+                    }
+                    while (1)
+                    {
+                      printf("\nENTER THE NAME: ");
+                      scanf("%s",f.name);
+                      fprintf(fp,"%s ",f.name);
+                      fflush(stdin);
+                      printf("ENTER THE TELEPHONE NUMBER:->");
+                      scanf("%lld",&f.no);
+                      fprintf(fp,"%lld\n",f.no);
+                      fflush(stdin);
+                      printf("\n\nWISH TO CONTINUE?(Y/N)");
+                      scanf("%c",&c);
+                      if(c=='n' || c=='N')
+                            break;
+                    }
+                    fclose(fp);
+                    break;
+            case 2:
+                    printf("ENTER THE NAME OF THE FRIEND: ");
+                    scanf("%s", word);
+                    fp = fopen("d:\\telephone.txt", "r+");
+                    if (fp == NULL)
+                    {
+                        printf("Unable to open file.\n");
+                        printf("Please check you have read/write previleges.\n");
+
+                        exit(1);
+                    }
+                    char str[BUFFER_SIZE];
+                    char *pos;
+                    line = 0;
+                    col  = -1;
+                    while ((fgets(str, BUFFER_SIZE, fp)) != NULL)
+                    {
+                    pos = strstr(str, word);
+
+                    if (pos != NULL)
+                        {
+                            col = (pos - str);
+                            length=strlen(word);
+                            break;
+                        }
+                    line += 1;
+                    }
+                    if (col == -1)
+                        line = -1;
+                        fseek(fp,-(length+11),SEEK_CUR);
+
+                    if (line != -1)
+                    {
+                        fscanf(fp,"%s %llld\n",&f.name,&f.no);
+                        if(strcmp(f.name,word)==0)
+                        {
+                            printf("%llld",f.no);
+						}
+						else
+						{
+							printf("'%s' DOES NOT EXIST IN THE LIST.", word);
+						}
+                    }
+
+                    else
+                        printf("'%s' DOES NOT EXIST IN THE LIST.", word);
+
+                    fclose(fp);
+                    break;
+            case 3:
+    				fp=fopen("d:\\telephone.txt","r");
+				    if(fp==NULL)
+				    {
+				        printf("Unable to open file.\n");
+				        printf("Please check you have read/write previleges.\n");
+				        exit(1);
+				    }
+				    printf("ENTER YOUR FRIEND NUMBER: ");
+				    scanf("%lld",&x);
+				    while(1)
+				    {
+				        int cnt=fscanf(fp,"%s %lld\n",&f.name,&f.no);
+				        if(cnt==-1)
+				            break;
+				            if(f.no==x)
+				            {
+				            	printf("%s\n",f.name);
+				            	found=1;
+				            	break;
+							}
+				    }
+				    if(found!=1)
+				        {
+				        	printf("'%lld' DOES NOT EXIST IN THE LIST",x);
+						}
+				    fclose(fp);
+				    break;
+            default:
+                    exit(1);
+                    break;
+        }
+    }
+    return 0;
+}
